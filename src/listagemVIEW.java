@@ -1,12 +1,12 @@
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author Adm
@@ -38,8 +38,9 @@ public class listagemVIEW extends javax.swing.JFrame {
         id_produto_venda = new javax.swing.JTextPane();
         btnVender = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
-        btnVendas = new javax.swing.JButton();
+        btnVendidos = new javax.swing.JButton();
         btnVoltar = new javax.swing.JButton();
+        btnAVender = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -71,10 +72,10 @@ public class listagemVIEW extends javax.swing.JFrame {
             }
         });
 
-        btnVendas.setText("Consultar Vendas");
-        btnVendas.addActionListener(new java.awt.event.ActionListener() {
+        btnVendidos.setText("Consultar Vendidos");
+        btnVendidos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVendasActionPerformed(evt);
+                btnVendidosActionPerformed(evt);
             }
         });
 
@@ -85,13 +86,20 @@ public class listagemVIEW extends javax.swing.JFrame {
             }
         });
 
+        btnAVender.setText("Consultar A Vender");
+        btnAVender.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAVenderActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(47, 47, 47)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -99,17 +107,21 @@ public class listagemVIEW extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnVender))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(btnVoltar)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(btnVendas, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnVendidos, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(122, 122, 122)
+                        .addComponent(btnAVender, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(49, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(193, 193, 193))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(193, 193, 193))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnVoltar)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,33 +137,51 @@ public class listagemVIEW extends javax.swing.JFrame {
                     .addComponent(btnVender))
                 .addGap(29, 29, 29)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnVendas)
-                    .addComponent(btnVoltar))
-                .addGap(17, 17, 17))
+                    .addComponent(btnVendidos)
+                    .addComponent(btnAVender))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addComponent(btnVoltar)
+                .addContainerGap())
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
         String id = id_produto_venda.getText();
-        
-        ProdutosDAO produtosdao = new ProdutosDAO();
-        
-        //produtosdao.venderProduto(Integer.parseInt(id));
-        listarProdutos();
+
+        try {
+            int produtoId = Integer.parseInt(id);
+
+            ProdutosDAO produtosdao = new ProdutosDAO();
+
+            // Chama o método para vender o produto
+            produtosdao.venderProduto(produtoId);
+
+            // Limpa o campo de Vender
+            id_produto_venda.setText("");
+
+            // Atualiza a lista de produtos na tabela
+            listarProdutos();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Por favor, insira um ID válido para vender o produto.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnVenderActionPerformed
 
-    private void btnVendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendasActionPerformed
-        //vendasVIEW vendas = new vendasVIEW(); 
-        //vendas.setVisible(true);
-    }//GEN-LAST:event_btnVendasActionPerformed
+    private void btnVendidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVendidosActionPerformed
+        listarProdutosVendidos();
+    }//GEN-LAST:event_btnVendidosActionPerformed
 
     private void btnVoltarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVoltarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
+
+    private void btnAVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAVenderActionPerformed
+        listarProdutosAVender();
+    }//GEN-LAST:event_btnAVenderActionPerformed
 
     /**
      * @param args the command line arguments
@@ -189,8 +219,9 @@ public class listagemVIEW extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnVendas;
+    private javax.swing.JButton btnAVender;
     private javax.swing.JButton btnVender;
+    private javax.swing.JButton btnVendidos;
     private javax.swing.JButton btnVoltar;
     private javax.swing.JTextPane id_produto_venda;
     private javax.swing.JLabel jLabel1;
@@ -201,16 +232,16 @@ public class listagemVIEW extends javax.swing.JFrame {
     private javax.swing.JTable listaProdutos;
     // End of variables declaration//GEN-END:variables
 
-    private void listarProdutos(){
+    private void listarProdutos() {
         try {
             ProdutosDAO produtosdao = new ProdutosDAO();
-            
+
             DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
             model.setNumRows(0);
-            
+
             ArrayList<ProdutosDTO> listagem = produtosdao.listarProdutos();
-            
-            for(int i = 0; i < listagem.size(); i++){
+
+            for (int i = 0; i < listagem.size(); i++) {
                 model.addRow(new Object[]{
                     listagem.get(i).getId(),
                     listagem.get(i).getNome(),
@@ -220,6 +251,52 @@ public class listagemVIEW extends javax.swing.JFrame {
             }
         } catch (Exception e) {
         }
-    
     }
+
+    private void listarProdutosVendidos() {
+        try {
+            ProdutosDAO produtosdao = new ProdutosDAO();
+
+            DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
+            model.setNumRows(0);
+
+            ArrayList<ProdutosDTO> listagem = produtosdao.listarProdutos();
+
+            for (int i = 0; i < listagem.size(); i++) {
+                if (listagem.get(i).getStatus().equals("Vendido")) {
+                    model.addRow(new Object[]{
+                        listagem.get(i).getId(),
+                        listagem.get(i).getNome(),
+                        listagem.get(i).getValor(),
+                        listagem.get(i).getStatus()
+                    });
+                }
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    private void listarProdutosAVender() {
+        try {
+            ProdutosDAO produtosdao = new ProdutosDAO();
+
+            DefaultTableModel model = (DefaultTableModel) listaProdutos.getModel();
+            model.setNumRows(0);
+
+            ArrayList<ProdutosDTO> listagem = produtosdao.listarProdutos();
+
+            for (int i = 0; i < listagem.size(); i++) {
+                if (listagem.get(i).getStatus().equals("A Venda")) {
+                    model.addRow(new Object[]{
+                        listagem.get(i).getId(),
+                        listagem.get(i).getNome(),
+                        listagem.get(i).getValor(),
+                        listagem.get(i).getStatus()
+                    });
+                }
+            }
+        } catch (Exception e) {
+        }
+    }
+
 }

@@ -47,8 +47,8 @@ public class ProdutosDAO {
     }
 
     public ArrayList<ProdutosDTO> listarProdutos() {
-        /*try {
-        
+        try {
+
             // Conecte-se ao banco de dados
             conn = new conectaDAO().connectDB();
 
@@ -75,7 +75,6 @@ public class ProdutosDAO {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Erro ao listar produtos: " + e.getMessage());
         }
-        */
         return listagem;
     }
 

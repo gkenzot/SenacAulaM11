@@ -37,12 +37,12 @@ public class ProdutosDAO {
             // Execute a instrução SQL de inserção
             prep.executeUpdate();
 
-            // JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
+            JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
 
             // Feche a conexão com o banco de dados
             conn.close();
         } catch (HeadlessException | SQLException e) {
-            // JOptionPane.showMessageDialog(null, "Erro ao cadastrar produto: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro ao cadastrar produto: " + e.getMessage());
         }
     }
 
